@@ -1,60 +1,56 @@
-body {
-    font-family: sans-serif;
-    background-color: #000000;
-  }
-  
-  header {
-    background-color: #353535;
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
-  }
-
-  main {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .movie {
-    background-color: #000000;
-    border-radius: 3px;
-    box-shadow: 0 4px 5px;
-    overflow: hidden;
-    position: relative;
-    margin: 1rem;
-    width: 300px;
-  }
-  .movie img {
-    width: 100%;
-  }
-  
-  .movie-info {
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 1rem 1rem;
-    letter-spacing: 0.5px;
-  }
-  .movie-info span {
-    background-color: #353535;
-    border-radius: 3px;
-    font-weight: bold;
-    padding: 0.25rem 0.5rem;
-  }  
-
-  .overview {
-    background-color: #fff;
-    padding: 2rem;
-    position: absolute;
-    max-height: 100%;
-    overflow: auto;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    transform: translateY(101%);
-    transition: transform 0.3s ease-in;
-  }
-  
-  .movie:hover .overview {
-    transform: translateY(0);}
+const APIURL =
+  "https://api.themoviedb.org/3/movie/top_rated?&api_key=8172f03c96ba74084086d2a8724c2989&page=1";
+const IMGPATH = "https://image.tmdb.org/t/p/w500";
+const SEARCHAPI =
+  "https://api.themoviedb.org/3/search/movie?&api_key=8172f03c96ba74084086d2a8724c2989&query=";
+const main = document.getElementById("main");
+const form = document.getElementById("form");
+const search = document.getElementById("search");
+const btn = document.getElementById("btn"); // 추가한 코드
+let allMovies = []; // 추가한 코드
+const getMovies = async (url) => {
+  const resp = await fetch(url);
+  const respData = await resp.json();
+  const { results } = respData; // 변경한 코드
+  allMovies = results; // 변경한 코드
+};
+const showMovies = (movies) => {
+  main.innerHTML = "";
+  movies.forEach((movie) => {
+    const { id, poster_path, title, vote_average, overview } = movie;
+    const movieEl = document.createElement("div");
+    movieEl.classList.add("movie");
+    movieEl.innerHTML = `
+<img
+src="${IMGPATH + poster_path}"
+alt="${title}"
+/>
+<div class="movie-info">
+<h3>${title}</h3>
+<span>${vote_average}</span>
+</div>
+<div class="overview">
+${overview}
+<div>`;
+    movieEl.addEventListener("click", () => {
+      alert(`영화 ID: ${id}`);
+    });
+    main.appendChild(movieEl);
+  });
+};
+getMovies(APIURL);
+// 추가한 코드
+window.addEventListener("load", () => {
+  showMovies(allMovies);
+});
+showMovies(allMovies);
+const clickBtn = (e) => {
+  e.preventDefault();
+  const searchTerm = search.value;
+  console.log(allMovies[0]);
+  const filteredMovies = allMovies.filter((movie) => {
+    return movie.title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+  showMovies(filteredMovies);
+};
+btn.addEventListener("click", clickBtn);
