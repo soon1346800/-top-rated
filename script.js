@@ -1,8 +1,8 @@
 const APIURL =
-  "https://api.themoviedb.org/3/movie/top_rated?&api_key=8172f03c96ba74084086d2a8724c2989&page=1";
+  "https://api.themoviedb.org/3/movie/top_rated?&api_key=""&page=1";
 const IMGPATH = "https://image.tmdb.org/t/p/w500";
 const SEARCHAPI =
-  "https://api.themoviedb.org/3/search/movie?&api_key=8172f03c96ba74084086d2a8724c2989&query=";
+  "https://api.themoviedb.org/3/search/movie?&api_key=""&query=";
 const main = document.getElementById("main");
 const form = document.getElementById("form");
 const search = document.getElementById("search");
